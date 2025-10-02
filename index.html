@@ -1,0 +1,158 @@
+<!doctype html>
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Undangan Melaspas & Memirak</title>
+  <meta name="description" content="Undangan Melaspas & Memirak — responsive, shareable, dan bisa menampilkan nama tamu lewat parameter URL (?kpd=Nama)." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--accent:#d94660}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    .heading{font-family:'Playfair Display',serif}
+    .glass{backdrop-filter: blur(6px); background: rgba(255,255,255,0.6); border-radius: 14px}
+  </style>
+</head>
+<body class="bg-gradient-to-b from-rose-50 to-white text-slate-800 min-h-screen flex items-center justify-center p-4">
+  <main class="max-w-3xl w-full">
+    <!-- Hero -->
+    <section class="relative rounded-2xl overflow-hidden shadow-lg">
+      <img id="heroImg" src="hero.jpg" alt="hero" class="w-full h-72 object-cover" />
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="text-center text-white px-6">
+          <h1 class="heading text-4xl sm:text-5xl font-bold drop-shadow-lg">Melaspas & Memirak</h1>
+          <p class="mt-2 text-lg drop-shadow">06 Oktober 2025 — 16:00 WITA</p>
+          <p class="mt-4 text-sm bg-black/30 px-3 py-1 rounded">Sampai selesai</p>
+        </div>
+      </div>
+      <div id="kpdBadge" class="absolute top-4 right-4 glass px-3 py-1 text-sm hidden">Untuk: <span id="kpdName" class="font-semibold"></span></div>
+    </section><!-- Content -->
+<section class="glass mt-6 p-6 shadow-md">
+  <h2 class="heading text-2xl mb-4 text-center">Atas Rahmat Tuhan Yang Maha Esa</h2>
+  <p class="text-slate-700 text-center">kami bermaksud mengundang Anda di acara Kami. Merupakan suatu kehormatan dan kebahagiaan bagi kami sekeluarga, apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.</p>
+
+  <div class="mt-6 text-center">
+    <h3 class="heading text-xl">Detail Acara</h3>
+    <p class="mt-2">Hari Senin, 06 Oktober 2025</p>
+    <p class="mt-1">Pukul 16:00 WITA — selesai</p>
+  </div>
+
+  <div class="mt-5 flex gap-3 flex-wrap justify-center">
+    <button id="rsvpBtn" class="px-4 py-2 rounded-md border bg-white hover:bg-rose-50">Konfirmasi Kehadiran</button>
+    <button id="shareBtn" class="px-4 py-2 rounded-md border bg-white">Bagikan</button>
+    <button id="mapBtn" class="px-4 py-2 rounded-md border bg-white">Lihat Lokasi</button>
+  </div>
+
+  <!-- Music toggle -->
+  <div class="mt-6 flex items-center justify-center gap-4">
+    <button id="musicToggle" class="px-3 py-2 rounded-md border">Putar Musik</button>
+    <audio id="bgMusic" loop src="https://cdn.pixabay.com/download/audio/2022/02/01/audio_2a5a12d8b3.mp3?filename=morning-happiness.mp3"></audio>
+  </div>
+
+  <!-- Closing -->
+  <div class="mt-6 text-center">
+    <p class="text-slate-700">Besar harapan kami jika Bapak/Ibu/Sahabat/Sdr/i berkenan hadir pada acara ini.</p>
+    <p class="text-slate-700 mt-1">Atas perhatiannya, terima kasih.</p>
+  </div>
+</section>
+
+<!-- Map modal -->
+<div id="mapModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center p-4">
+  <div class="bg-white rounded-lg w-full max-w-2xl p-4">
+    <div class="flex justify-between items-center mb-2">
+      <h4 class="font-semibold">Lokasi Acara</h4>
+      <button id="closeMap" class="text-slate-500">Tutup</button>
+    </div>
+    <div class="w-full h-64 rounded overflow-hidden">
+      <iframe width="100%" height="100%" frameborder="0" style="border:0" src="https://www.google.com/maps/embed?pb=!1m18!2m12!1m3!1d3170.0!2d-122.084249!3d37.422065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- RSVP modal -->
+<div id="rsvpModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center p-4">
+  <form id="rsvpForm" class="bg-white rounded-lg w-full max-w-md p-6 space-y-4 shadow-lg">
+    <h3 class="text-lg font-semibold">Konfirmasi Kehadiran</h3>
+    <input id="guestName" required placeholder="Nama Anda" class="w-full border px-3 py-2 rounded" />
+    <select id="guestAttend" class="w-full border px-3 py-2 rounded">
+      <option value="Hadir">Hadir</option>
+      <option value="Tidak">Tidak Bisa</option>
+    </select>
+    <textarea id="guestNote" placeholder="Pesan / doa" class="w-full border px-3 py-2 rounded"></textarea>
+    <div class="flex justify-end gap-3">
+      <button type="button" id="cancelRsvp" class="px-4 py-2 rounded border">Batal</button>
+      <button type="submit" class="px-4 py-2 rounded bg-rose-500 text-white">Kirim</button>
+    </div>
+  </form>
+</div>
+
+<!-- Footer -->
+<footer class="mt-6 text-center text-sm text-slate-500">Dibuat dengan ❤️ • Undangan Digital</footer>
+
+  </main>  <script>
+    function getQueryParam(name){
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    const kpd = getQueryParam('kpd');
+    if(kpd){
+      document.getElementById('kpdName').textContent = decodeURIComponent(kpd);
+      document.getElementById('kpdBadge').classList.remove('hidden');
+    }
+
+    // RSVP modal
+    const rsvpBtn = document.getElementById('rsvpBtn');
+    const rsvpModal = document.getElementById('rsvpModal');
+    const rsvpForm = document.getElementById('rsvpForm');
+    const cancelRsvp = document.getElementById('cancelRsvp');
+
+    rsvpBtn.addEventListener('click', ()=> rsvpModal.classList.remove('hidden'));
+    cancelRsvp.addEventListener('click', ()=> rsvpModal.classList.add('hidden'));
+
+    rsvpForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const data={
+        name: document.getElementById('guestName').value,
+        attend: document.getElementById('guestAttend').value,
+        note: document.getElementById('guestNote').value,
+        time: new Date().toISOString()
+      };
+      const saved = JSON.parse(localStorage.getItem('rsvp-data')||'[]');
+      saved.push(data);
+      localStorage.setItem('rsvp-data', JSON.stringify(saved));
+      alert('Terima kasih! Konfirmasi Anda telah diterima.');
+      rsvpModal.classList.add('hidden');
+      rsvpForm.reset();
+    });
+
+    // Share button
+    document.getElementById('shareBtn').addEventListener('click', async ()=>{
+      const shareUrl = window.location.href;
+      if(navigator.share){
+        try{ await navigator.share({title: document.title, url: shareUrl}); }
+        catch(e){ console.log('share canceled') }
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        alert('Link undangan disalin. Bagikan ke tamu Anda.');
+      }
+    });
+
+    // Map modal
+    const mapBtn = document.getElementById('mapBtn');
+    const mapModal = document.getElementById('mapModal');
+    const closeMap = document.getElementById('closeMap');
+    mapBtn.addEventListener('click', ()=> mapModal.classList.remove('hidden'));
+    closeMap.addEventListener('click', ()=> mapModal.classList.add('hidden'));
+
+    // Music toggle
+    const musicToggle = document.getElementById('musicToggle');
+    const bgMusic = document.getElementById('bgMusic');
+    musicToggle.addEventListener('click', ()=>{
+      if(bgMusic.paused){ bgMusic.play(); musicToggle.textContent = 'Hentikan Musik'; }
+      else { bgMusic.pause(); musicToggle.textContent = 'Putar Musik'; }
+    });
+  </script></body>
+</html>
